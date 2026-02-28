@@ -124,8 +124,3 @@
     @apply bg-background text-foreground;
   }
 }
-.galaxy-wrap canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}

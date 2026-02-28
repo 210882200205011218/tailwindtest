@@ -4,7 +4,7 @@ import Galaxy from '../../../components/ui/Galaxy';
 import GradientText from "@/components/GradientText";
 import {Input} from "@/components/ui/input";
 import SplitText from "@/components/SplitText";
-
+import { Button } from "@/components/ui/button";
 export default function LoginPage() {
     const router = useRouter()
     const handleAnimationComplete = () => {
@@ -70,7 +70,14 @@ export default function LoginPage() {
                             <Input className={"w-100 mb-5 mt-2"}/>
                         </div>
                     </div>
-                    <div className={"flex flex-row "}></div>
+                    <div className={"flex flex-row width-full justify-between"}>
+                        <Button className="w-11">
+                            登录
+                        </Button>
+                        <Button>
+                            注册
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
