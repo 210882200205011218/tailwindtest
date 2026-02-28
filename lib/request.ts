@@ -19,11 +19,7 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use(
   (response) => response.data,   // 成功直接返回 data
   (error) => {
-    if (error.response?.status === 401) {
-      // token 过期，跳转登录
-      localStorage.removeItem("token")
-      window.location.href = "/login"
-    }
+    
     return Promise.reject(error)
   }
 )

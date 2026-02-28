@@ -1,30 +1,74 @@
 'use client'
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
 import Galaxy from '../../../components/ui/Galaxy';
 import GradientText from "@/components/GradientText";
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import SplitText from "@/components/SplitText";
 import { Button } from "@/components/ui/button";
 import TextPressure from "@/components/TextPressure";
 import CircularText from "@/components/CircularText";
+import { GetCaptcha, VerifyCaptcha } from "@/lib/api/captcha";
+import { verifycaptchaType } from "@/types/captcha";
+import { use, useState } from "react";
 export default function LoginPage() {
+    const [captcha_img, setcaptcha_img] = useState<string>("")
+    const [verifyCaptcha, setVerifyCaptcha] = useState<verifycaptchaType>({
+        captcha_id: "",
+        captcha_code: ""
+    })
     const router = useRouter()
-    const handleAnimationComplete = () => {
-        console.log('All letters have animated!');
-    };
+
+    const HandleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setVerifyCaptcha(prev => prev ? { ...prev, captcha_code: e.target.value } : prev)
+    }
 
     function ToRegister() {
         // 跳转到注册页面
         router.push('/register')
     }
-    function ToLogin() {
-        // 跳转到登录页面
-        router.push('/register')
+    const VerifyCode = async () => {
+        console.log(verifyCaptcha)
+        try {
+            const res = await VerifyCaptcha(verifyCaptcha)
+            console.log(res)
+            if (res.code == 200) {
+                console.log("验证码验证成功")
+                return true
+            } else {
+                console.log(res.message)
+                return false
+            }
+        } catch (e) {
+            console.log("验证码验证失败" + e)
+            return false
+        }
+    }
+
+
+    const ToLogin = async () => {
+        // if (await VerifyCode()) {
+        //     //登录  
+        //     router.push('/')
+        // }
+    }
+    const GetCaptchaCode = async () => {
+        try {
+            const res = await GetCaptcha()
+            const data = res.data
+            setcaptcha_img(data.captcha_img)
+            setVerifyCaptcha({
+                captcha_id: data.captcha_id,
+                captcha_code: ""
+            })
+            console.log(data.captcha_id)
+        } catch (e) {
+            console.log("获取验证码错误" + e)
+        }
     }
 
     return <div className="w-full top-0 left-0  h-screen relative bg-black">
         <div className="absolute inset-0">
-            <Galaxy transparent={false}/>
+            <Galaxy transparent={false} />
         </div>
 
         <div className="relative z-10 w-full h-screen flex items-start justify-center pt-20">
@@ -36,80 +80,85 @@ export default function LoginPage() {
                         spinDuration={20}
 
                     />
-
-
-                <div className={"flex flex-col justify-center mt-20 items-center"}>
-                    <div className={"p-2 flex flex-col items-start"}>
-                        <SplitText
-                            text="请输入账号名称"
-                            className="text-2xl font-semibold text-cyan-50"
-                            delay={50}
-                            duration={1.25}
-                            ease="power3.out"
-                            splitType="chars"
-                            from={{opacity: 0, y: 40}}
-                            to={{opacity: 1, y: 0}}
-                            threshold={0.1}
-                            rootMargin="0px"
-                            textAlign="left"
-                        />
-                        <Input className={"w-100 mb-5 mt-2"}/>
-                    </div>
-
-                    <div className={"flex flex-col justify-center"}>
+                    <div className={"flex flex-col justify-center mt-20 items-center"}>
                         <div className={"p-2 flex flex-col items-start"}>
                             <SplitText
-                                text="请输入密码"
+                                text="请输入账号名称"
                                 className="text-2xl font-semibold text-cyan-50"
                                 delay={50}
                                 duration={1.25}
                                 ease="power3.out"
                                 splitType="chars"
-                                from={{opacity: 0, y: 40}}
-                                to={{opacity: 1, y: 0}}
+                                from={{ opacity: 0, y: 40 }}
+                                to={{ opacity: 1, y: 0 }}
                                 threshold={0.1}
                                 rootMargin="0px"
                                 textAlign="left"
                             />
-                            <Input className={"w-100 mb-5 mt-2"}/>
+                            <Input className={"w-100 mb-5 mt-2  text-amber-50 bg-gray-400"} />
                         </div>
-                    </div>
-                    {/*验证码*/}
-                    <div className={"p-2 flex flex-col items-start"}>
-                        <SplitText
-                            text="请输入验证码"
-                            className="text-2xl font-semibold text-cyan-50"
-                            delay={50}
-                            duration={1.25}
-                            ease="power3.out"
-                            splitType="chars"
-                            from={{opacity: 0, y: 40}}
-                            to={{opacity: 1, y: 0}}
-                            threshold={0.1}
-                            rootMargin="0px"
-                            textAlign="left"
-                        />
-                       <div className={"flex flex-row gap-10 w-100 items-center"}>
-                           <Input className={"w-40 mb-5 mt-2"}/>
-                           <div className={"w-40 h-10 bg-amber-50"}></div>
-                           {/*<img*/}
-                           {/*    src=""*/}
-                           {/*    alt="Event cover"*/}
-                           {/*    className="w-28 "*/}
-                           {/*/>*/}
-                       </div>
-                    </div>
 
-                    <div className={"flex flex-row width-full gap-3 justify-between"}>
-                        <Button variant="outline" onClick={ToLogin}>登录</Button>
+                        <div className={"flex flex-col justify-center"}>
+                            <div className={"p-2 flex flex-col items-start"}>
+                                <SplitText
+                                    text="请输入密码"
+                                    className="text-2xl font-semibold text-cyan-50"
+                                    delay={50}
+                                    duration={1.25}
+                                    ease="power3.out"
+                                    splitType="chars"
+                                    from={{ opacity: 0, y: 40 }}
+                                    to={{ opacity: 1, y: 0 }}
+                                    threshold={0.1}
+                                    rootMargin="0px"
+                                    textAlign="left"
+                                />
+                                <Input className={"w-100 mb-5 mt-2  text-amber-50 bg-gray-400"} />
+                            </div>
+                        </div>
+                        {/*验证码*/}
+                        <div className={"p-2 flex flex-col items-start"}>
+                            <SplitText
+                                text="请输入验证码"
+                                className="text-2xl font-semibold text-cyan-50"
+                                delay={50}
+                                duration={1.25}
+                                ease="power3.out"
+                                splitType="chars"
+                                from={{ opacity: 0, y: 40 }}
+                                to={{ opacity: 1, y: 0 }}
+                                threshold={0.1}
+                                rootMargin="0px"
+                                textAlign="left"
+                            />
+                            <div className={"flex flex-row gap-10 w-100 items-center"}>
+                                <Input className={"w-40 mb-5 mt-2 text-amber-50 bg-gray-400"} value={verifyCaptcha.captcha_code} onChange={HandleInput} />
+                                {/* <div className={"w-40 h-10 bg-amber-50"} onClick={GetCaptchaCode}></div> */}
+                                {captcha_img ? (
+                                    <img
+                                        src={captcha_img}
+                                        alt="验证码"
+                                        className="w-28 bg-white"
+                                        onClick={GetCaptchaCode}
+                                    />
+                                ) : (
+                                    <div className="w-28 h-10 bg-gray-200 cursor-pointer flex items-center justify-center text-sm text-gray-500" onClick={GetCaptchaCode}>
+                                        点击获取验证码
+                                    </div>
+                                )}
+                            </div>
+                        </div>
 
-                        <Button variant="outline" onClick={ToRegister}>注册</Button>
+                        <div className={"flex flex-row width-full gap-3 justify-between"}>
+                            <Button type="button" variant="outline" onClick={VerifyCode}>登录</Button>
 
+                            <Button type="button" variant="outline" onClick={ToRegister}>注册</Button>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     </div>
 }
