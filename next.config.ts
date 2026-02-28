@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://127.0.0.1:8080/api/:path*", // 替换为你的后端地址
+        destination: "http://127.0.0.1:8080/api/:path*",
       },
     ];
   },
