@@ -8,7 +8,5 @@ export const GetCaptcha = (): Promise<ResultType<captchaType>> => {
 
 //验证验证码
 export const VerifyCaptcha = (captcha: verifycaptchaType): Promise<ResultType<null>> => {
-    return http.post("/captcha/verify", {
-        captcha
-    }) ;
+    return http.post("/captcha/verify", captcha) ;
 }

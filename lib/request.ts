@@ -8,7 +8,7 @@ const http=axios.create({
 
 // 请求拦截器 — 自动带上 token
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token")
+  const token = cookieStore.get("token")
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -19,7 +19,8 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use(
   (response) => response.data,   // 成功直接返回 data
   (error) => {
-    
+    console.log("请求错误:", error.response?.data)  // 打印服务器返回的 JSON
+    console.log("完整错误对象:", error)            // 打印完整错误信息
     return Promise.reject(error)
   }
 )
