@@ -1,25 +1,26 @@
-import { columns, Payment } from "@/app/payments/columns"
-import { DataTable } from "@/app/payments/data-table"
+'use client'
+import {columns} from "@/app/payments/columns"
+import {DataTable} from "@/app/payments/data-table"
+import {LogsType} from "@/types/logs";
+import {useEffect, useState} from "react";
+import {GetLogs} from "@/lib/api/logs";
 
-async function getData(): Promise<Payment[]> {
-    // Fetch data from your API here.
-    return [
-        {
-            id: "728ed52f",
-            amount: 100,
-            status: "pending",
-            email: "m@example.com",
-        },
 
-    ]
-}
+export default function Logs() {
+    const [data, setData] = useState<LogsType[]>([])
+    const fetchLogs = async () => {
+        const res = await GetLogs()
 
-export default async function DemoPage() {
-    const data = await getData()
+            setData(res.data)  // ✅ 设置数据
+            console.log(data)
 
+    }
+    useEffect(() => {
+        fetchLogs()
+    }, [])
     return (
         <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data}/>
         </div>
     )
 }

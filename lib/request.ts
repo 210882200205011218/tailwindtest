@@ -1,5 +1,6 @@
 // 统一 fetch 封装，自动携带 token
 import axios from "axios";
+import Cookies from "js-cookie";
 const http=axios.create({
   baseURL: "/api",
 });
@@ -8,7 +9,8 @@ const http=axios.create({
 
 // 请求拦截器 — 自动带上 token
 http.interceptors.request.use((config) => {
-  const token = cookieStore.get("token")
+  const token = Cookies.get("token")
+    console.log("token:", token)
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }

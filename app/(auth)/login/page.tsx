@@ -16,10 +16,10 @@ import {useUserStore} from "@/store/userstore";
 export default function LoginPage() {
     const user = useUserStore(state => state)
     const [captcha_img, setcaptcha_img] = useState<string>("")
-    const [verifyCaptcha, setVerifyCaptcha] = useState<verifycaptchaType>({
-        captcha_id: "",
-        captcha_code: ""
-    })
+    // const [verifyCaptcha, setVerifyCaptcha] = useState<verifycaptchaType>({
+    //     captcha_id: "",
+    //     captcha_code: ""
+    // })
     const [verifyInfo, setVerifyInfo] = useState<LoginModel>({
         username: "",
         password: "",
@@ -75,7 +75,7 @@ export default function LoginPage() {
                 description: "跳转主页中"
             })
             setTimeout(() => {
-                // router.push('/register')
+                router.push('/admin/logs')
             }, 3000)
         } else {
             toast.error("验证码错误", {
