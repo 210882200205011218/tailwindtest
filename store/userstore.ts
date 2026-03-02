@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import {LoginResponse} from "@/types/user";
 import Cookies from "js-cookie";
 import {persist} from "zustand/middleware";
-interface UserState {
+export interface UserState {
     user: LoginResponse | null
     isLogin: boolean
     token: string | null  // ← 添加这行

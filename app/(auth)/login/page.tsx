@@ -12,9 +12,9 @@ import {toast} from "sonner";
 import {LoginModel} from "@/types/user";
 import {login} from "@/lib/api/user";
 import {useUserStore} from "@/store/userstore";
-
+import {UserState} from "@/store/userstore";
 export default function LoginPage() {
-    const user = useUserStore(state => state)
+    const user = useUserStore((state:UserState) => state)
     const [captcha_img, setcaptcha_img] = useState<string>("")
     // const [verifyCaptcha, setVerifyCaptcha] = useState<verifycaptchaType>({
     //     captcha_id: "",
