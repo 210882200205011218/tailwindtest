@@ -11,8 +11,9 @@ import {FileIcon, FolderIcon, FileTextIcon, SettingsIcon, HomeIcon, ChevronRight
 import React from "react";
 import {useRouter} from "next/navigation";
 
+import { url } from "inspector"
 type FileTreeItem = |{ name: string;url?:string }|{ name: string;icon:React.ComponentType;url?:string } | { name: string; icon?: React.ComponentType;items: FileTreeItem[] }  // 文件夹项
-
+ 
     export function CollapsibleFileTree() {
     const fileTree: FileTreeItem[] = [
         {
