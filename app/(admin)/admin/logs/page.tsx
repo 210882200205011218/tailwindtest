@@ -7,12 +7,13 @@ import {GetLogs} from "@/lib/api/logs";
 
 
 export default function Logs() {
+
     const [data, setData] = useState<LogsType[]>([])
     const fetchLogs = async () => {
         const res = await GetLogs()
 
-            setData(res.data)  // ✅ 设置数据
-            console.log(data)
+        setData(res.data)  // ✅ 设置数据
+        console.log(data)
 
     }
     useEffect(() => {

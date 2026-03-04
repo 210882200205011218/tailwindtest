@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
@@ -8,13 +9,14 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {FileIcon, FolderIcon, FileTextIcon, SettingsIcon, HomeIcon, ChevronRightIcon} from "lucide-react"
 import React from "react";
+import {useRouter} from "next/navigation";
 
 type FileTreeItem = |{ name: string;url?:string }|{ name: string;icon:React.ComponentType;url?:string } | { name: string; icon?: React.ComponentType;items: FileTreeItem[] }  // 文件夹项
 
     export function CollapsibleFileTree() {
     const fileTree: FileTreeItem[] = [
         {
-            name: "博客管理",
+            name: "w",
             icon: FileTextIcon,  // 自定义图标
             items: [
                 {
@@ -44,7 +46,10 @@ type FileTreeItem = |{ name: string;url?:string }|{ name: string;icon:React.Comp
             url: "/admin/home"  // 没有items表示是单个链接
         },
     ]
-
+        const router = useRouter()
+        const ToPage=(url:string)=>{
+            router.push(url)
+        }
         const renderItem = (fileItem: FileTreeItem) => {
         if ("items" in fileItem) {
             return (
@@ -74,6 +79,7 @@ type FileTreeItem = |{ name: string;url?:string }|{ name: string;icon:React.Comp
                 variant="link"
                 size="sm"
                 className="text-foreground w-full justify-start gap-2"
+                onClick={()=>ToPage(fileItem.url?fileItem.url:"")}
             >
                 <FileIcon />
                 <span>{fileItem.name}</span>
